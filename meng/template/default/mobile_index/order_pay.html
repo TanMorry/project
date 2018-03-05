@@ -1,0 +1,80 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="{$pe['host_root']}"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<form method="post" id="form">
+<div class="content" style="margin-top:10px">
+	<div class="order_cg">
+		<i class="tjcg_dui"></i>
+		<!--{if($info['order_payway'] == 'cod'):}-->
+		<div class="tjcg_tt">订单已提交，我们会尽快安排发货！</div>
+		<!--{else:}-->
+		<div class="tjcg_tt">订单已提交，请尽快付款！</div>	
+		<!--{endif;}-->
+		<div class="mat10">订单编号：<span class="c888">{$info['order_id']}</span></div>
+		<div class="mat10">
+			支付方式：<span class="c888">{$cache_payway[$info['order_payway']]['payway_name']}</span>
+			<!--{if($info['order_state'] == 'wpay'):}-->
+			<a href="javascript:payway_show();" class="cblue mal10">[更换支付]</a>
+			<!--{endif;}-->
+		</div>
+		<div class="mat10 dd_yingfu">应付金额：<span>{$info['order_money']}</span> 元</div>
+	</div>
+	<div id="payway_html" style="display:none">
+		<div class="dingdan_tt1"><p>请选择支付方式</p></div>
+		<div class="fk_tb">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<!--{foreach($payway_list as $k=>$v):}-->
+			<!--{if($v['payway_mark'] == 'cod')continue}-->
+			<tr class="js_radio" val="{$k}">
+				<td width="110">
+					<div style="width:20px; overflow:hidden;" class="fl mar5"><img src="{$pe['host_root']}include/plugin/payway/{$k}/logo.png" width="85" /></div>
+					<span class="fl mat2">{$v['payway_name']}</span>
+				</td>
+				<td><!--{if($v['payway_mark'] == 'balance'):}--><div class="c888" style="text-align:right">当前余额：{$user['user_money']}元</div><!--{endif;}--></td>
+				<td width="30"><span class="dui"></span></td>
+			</tr>
+			<!--{endforeach;}-->
+			</table>
+		</div>
+	</div>
+	<!--{if($info['order_state'] == 'wpay'):}-->
+	<div class="loginbtn" style="margin:15px 12px;">
+		<input type="hidden" name="order_payway" />
+		<input type="hidden" name="pe_token" value="{$pe_token}" />
+		<input type="hidden" name="pesubmit" />	
+		<input type="button" value="去付款" />
+	</div>
+	<!--{endif;}-->	
+</div>
+<div id="bank_text" style="display:none">{nl2br($cache_payway['bank']['payway_config']['bank_text'])}</div>
+</form>
+<script type="text/javascript" src="{$pe['host_root']}include/plugin/payway/wechat/wechat.js"></script>
+<script type="text/javascript">
+$(function(){
+	pe_select_radio('order_payway', "{$info['order_payway']}");
+	$(":button").click(function(){
+		var order_payway = $(":input[name='order_payway']").val();
+		if (order_payway == 'bank') {
+			layer.open({
+				content: $("#bank_text").html(),
+				btn: '确认'
+			});	
+		}
+		else if(wx_check() && order_payway == 'wechat') {
+			app_tip('正在连接微信支付');
+			wx_jspay("{$info['order_id']}");
+		}
+		else {
+			$("form").submit();
+		}
+	})
+})
+function payway_show() {
+	$("#payway_html").show();
+}
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

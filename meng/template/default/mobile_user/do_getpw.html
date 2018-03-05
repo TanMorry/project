@@ -1,0 +1,49 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="javascript:history.go(-1)"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<div class="content">
+	<div class="loginbox">
+		<form method="post" id="form">
+		<div class="tip_use mat10">用 户 名：</div>
+		<div class="input_box"><input type="text" name="user_name" class="login_input1" placeholder="请填写您的用户名" /></div>
+		<div class="tip_pwd mat10">注册邮箱：</div>
+		<div class="input_box"><input type="text" name="user_email" class="login_input1" placeholder="请填写您的注册邮箱" /></div>
+		<div class="tip_pwd mat10">验 证 码：</div>
+		<div class="login_input2">
+			<input type="text" name="authcode" class="yzm_input" placeholder="请填写验证码" />
+			<img src="{$pe['host_root']}include/class/authcode.class.php?w=110&h=41" onclick="pe_yzm(this)" class="yzm_img" style="cursor:pointer;" />
+		</div>
+		<div class="loginbtn">
+			<input type="hidden" name="pesubmit" />
+			<input type="button" value="提 交" />
+		</div>
+		</form>
+		<div class="zh_zc1">
+			<a href="{$pe['host_root']}user.php?mod=do&act=register" class="mar10">免费注册</a> |
+			<a href="{$pe['host_root']}user.php?mod=do&act=login" class="mal10">用户登录</a>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(":button").click(function(){
+		if ($(":input[name='user_name']").val() == '') {
+			app_tip('请填写用户名');
+			return false;
+		}
+		if ($(":input[name='authcode']").val() == '') {
+			app_tip('请填写验证码...');
+			return false;
+		}
+		$(this).val('提交中...');
+		app_submit('user.php?mod=do&act=getpw', function(json){
+			$(":button").val('提交');
+		})
+	})
+})
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

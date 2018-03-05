@@ -1,0 +1,74 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="javascript:history.go(-1)"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<form method="post" id="form">
+<div class="zhuce_box" style="border-top:0">
+	<div class="user_box">
+		<div class="tip_box">
+			<span class="user_left">用户帐号：</span>
+			<div class="user_right"><input type="text" name="user_name" class="user_input1" placeholder="请填写您的用户名" /></div>
+		</div>
+		<div class="tip_box" style="border-bottom:0">
+			<span class="user_left">登录密码：</span>
+			<div class="user_right"><input type="password" name="user_pw" class="user_input1" placeholder="请填写登录密码" /></div>
+		</div>
+	</div>
+</div>
+<div class="loginbtn" style="margin:20px 10px;">
+	<input type="hidden" name="pesubmit" />
+	<input type="button" value="登 录" />
+</div>
+</form>
+<!--<div class="loginbox">
+	<form method="post" id="form">
+	<div class="tip_use mat10">用户名<span id="user_name_show"></span></div>
+	<div class="input_box"><input type="text" name="user_name" class="login_input1" /></div>
+	<div class="tip_pwd mat10">密&nbsp;&nbsp;码<span id="user_pw_show"></span></div>
+	<div class="input_box"><input type="password" name="user_pw" class="login_input1" /></div>
+	<div class="clear"></div>
+	<div class="tip_pwd mat10">验证码<span id="user_pw_show"></span></div>
+	<div class="login_input2">
+		<input type="text" name="authcode" class="yzm_input" />
+		<img src="{$pe['host_root']}include/class/authcode.class.php?w=110&h=41" onclick="pe_yzm(this)" class="yzm_img" style="cursor:pointer;" />
+	</div>
+	<input type="hidden" name="pesubmit" />
+	<div class="loginbtn"><input type="button" value="登 陆" /></div>
+	</form>
+</div>-->
+<div class="zh_zc1">
+	<a  href="{$pe['host_root']}user.php?mod=do&act=register" class="mar10">免费注册</a> |
+	<a  href="{$pe['host_root']}user.php?mod=do&act=getpw" class="mal10">忘记密码</a>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(":button").click(function(){
+		if ($(":input[name='user_name']").val() == '') {
+			app_tip('请填写用户名');
+			return false;
+		}
+		if ($(":input[name='user_pw']").val() == '') {
+			app_tip('请填写密码');
+			return false;
+		}
+		$(this).val('登录中...');
+		app_submit('user.php?mod=do&act=login', function(json){
+			if (json.result) {
+				if ('{$_g_fromto}' != '') {
+					app_open('back', 1000);
+				}
+				else {
+					app_open('user.php', 1000);				
+				}
+			}
+			else {
+	    		$(":button").val('登 录');			
+			}
+		})
+	})
+})
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

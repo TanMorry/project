@@ -1,0 +1,38 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="user.php"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<div class="content">
+	<!--{if(!count($info_list)):}-->
+	<div class="nodata">
+		<div class="nodata_img"></div>
+		<div class="nodata_tip">暂无信息</div>
+	</div>
+	<!--{endif;}-->
+	<!--{foreach($info_list as $v):}-->
+	<div class="user_box_zh mat10 pageid" style="border-bottom:0">
+		<div class="add_list">
+			<span class="fl">{$v['user_tname']}</span>
+			<span class="fr">{$v['user_phone']}</span>
+			<div class="clear"></div>
+			<div class="mat5">
+				<!--{if($v['address_default']):}--><span class="cred">[默认]</span><!--{endif;}-->
+				<span class="c999">{$v['address_province']} {$v['address_city']} {$v['address_area']} {$v['address_text']}</span>
+			</div>
+			<div class="xian"></div>
+			<div class="fr mat10">
+				<a href="user.php?mod=useraddr&act=edit&id={$v['address_id']}" class="edit_btn mar10">修改</a>
+				<a href="user.php?mod=useraddr&act=del&id={$v['address_id']}&token={$pe_token}" onclick="return app_delinfo(this, '删除该地址')" class="edit_btn">删除</a>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<!--{endforeach;}-->
+	<a href="user.php?mod=useraddr&act=add" class="tjbtn">新增地址</a>
+	<div class="fenye mab10">{$db->page->html}</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

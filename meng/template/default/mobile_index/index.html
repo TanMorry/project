@@ -1,0 +1,130 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop1">
+	<div class="fh1"><a href="javascript:history.go(-1);"></a></div>
+	<div class="sear" onclick="javascript:app_iframe('{$pe['host_root']}index.php?mod=search');">
+		<div class="sear_input_box"><input name="keyword" type="text" class="sear_input" placeholder="请输入您要搜索的关键字" /></div>
+		<div class="sear_tj"><input type="button" value=" "></div>
+		<div class="clear"></div>
+	</div>
+	<div class="cd2">
+		<a href="{$pe['host_root']}user.php"></a>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="content">
+	<div class="swiper-container jdt">
+	    <div class="swiper-wrapper">
+		<!--{if(is_array($cache_ad['index_jdt'])):}-->
+		<!--{foreach($cache_ad['index_jdt'] as $v):}-->
+        <div class="swiper-slide">
+            <a href="{$v['ad_url']}"><img data-src="{pe_thumb($v['ad_logo'])}" class="swiper-lazy"></a>
+            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+        </div>
+		<!--{endforeach;}-->
+		<!--{endif;}-->
+	    </div>
+	    <!-- 如果需要分页器 -->
+	    <div class="swiper-pagination"></div>
+	</div>
+	<div class="nav">
+		<ul>
+		<li><a href="{pe_url('category-list')}"><i class="nav_i1"></i><span>全部商品</span></a></li>
+		<li><a href="{pe_url('brand-list')}"><i class="nav_i2"></i><span>品牌专区</span></a></li>
+		<li><a href="{$pe['host_root']}index.php?mod=product&act=choice"><i class="nav_i3"></i><span>每日精选</span></a></li>
+		<li><a href="{pe_url('article-help')}"><i class="nav_i4"></i><span>热抢专区</span></a></li>
+		<li><a href="{$pe['host_root']}user.php"><i class="nav_i5"></i><span>会员中心</span></a></li>
+		<li><a href="{$pe['host_root']}user.php?mod=order"><i class="nav_i6"></i><span>我的订单</span></a></li>
+		<li><a href="{$pe['host_root']}user.php?mod=collect"><i class="nav_i7"></i><span>我的收藏</span></a></li>
+		<li><a href="{pe_url('order-add')}"><i class="nav_i8"></i><span>购物车</span></a></li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<div class="index_gg" id="gundong_html">
+		<i></i>
+		<div class="index_gglist gundong_list">
+			<ul>
+			<!--{foreach($notice_list as $v):}-->
+			<li><span class="c999">[{pe_date($v['article_atime'], 'Y-m-d')}]</span> <a href="{pe_url('article-'.$v['article_id'])}">{pe_cut($v['article_name'], 16, '...')}</a></li>
+			<!--{endforeach;}-->
+			</ul>
+		</div>
+	</div>
+	<div class="tuijian_list mat10">
+		<div style="padding-bottom:10px">
+			<div class="tuijian_tt">新品推荐</div>
+		</div>
+		<ul>
+		<!--{foreach($product_newlist as $k=>$v):}-->
+		<li>
+			<div class="li_box">
+			<a href="{pe_url('product-'.$v['product_id'])}" title="{$v['product_name']}"><img src="{$pe['host_tpl']}images/pixel.gif" data-url="{pe_thumb($v['product_logo'], 400, 400)}" title="{$v['product_name']}" class="js_imgload" /></a>
+			<div class="pro_name_box">
+				<p>{$v['product_name']}</p>
+				<span>¥ {$v['product_money']}</span>
+			</div>
+			</div>
+		</li>
+		<!--{endforeach;}-->
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<!--{foreach($category_indexlist as $k=>$v):}-->
+	<div class="tuijian_list mat10">
+		<div style="padding-bottom:10px">
+			<div class="tuijian_tt">
+				{$v['category_name']}
+				<a href="{pe_url('product-list-'.$v['category_id'])}" title="{$v['category_name']}" class="fr font13 c888">更多+</a>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<ul>
+		<!--{foreach($v['product_list'] as $kk=>$vv):}-->
+		<li>
+			<div class="li_box">
+				<a href="{pe_url('product-'.$vv['product_id'])}" title="{$vv['product_name']}"><img src="{$pe['host_tpl']}images/pixel.gif" data-url="{pe_thumb($vv['product_logo'], 400, 400)}" title="{$vv['product_name']}" class="js_imgload" /></a>
+				<div class="pro_name_box">
+					<p>{$vv['product_name']}</p>
+					<span>¥ {$vv['product_money']}</span>
+				</div>
+			</div>
+		</li>
+		<!--{endforeach;}-->
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<!--{endforeach;}-->
+</div>
+<div class="index_foot">
+	<div class="">{$cache_setting['web_title']}</div>
+	<div class="kfdh">客服电话：<a href="tel:{$cache_setting['web_phone']}">{$cache_setting['web_phone']}</a>　QQ：<a href="mqqwpa://im/chat?chat_type=wpa&uin={$cache_setting['web_qq']}&version=1&src_type=web&web_src={$pe['host_root']}">{$cache_setting['web_qq']}</a></div>
+	Copyright <span class="num">©</span> {$cache_setting['web_copyright']}　{$cache_setting['web_icp']} {$cache_setting['web_tongji']}
+</div>
+<link type="text/css" rel="stylesheet" href="{$pe['host_root']}include/plugin/swiper/swiper.min.css" />
+<script type="text/javascript" src="{$pe['host_root']}include/plugin/swiper/swiper.jquery.min.js"></script>
+<script type="text/javascript" src="{$pe['host_root']}include/js/jquery.SuperSlide.js"></script>
+<script type="text/javascript">
+$(function(){
+	//焦点图切换
+	var swiper = new Swiper('.swiper-container', {
+	    pagination: '.swiper-pagination',
+	    paginationClickable: true,
+	    // Disable preloading of all images
+	    preloadImages: false,
+	    // Enable lazy loading
+	    lazyLoading: true,
+	    initialSlide : 0,
+	    autoplay : 2500
+	});
+})
+//滚动公告
+$("#gundong_html").slide({
+	mainCell:".gundong_list ul",
+	effect:"topLoop",
+	vis:1,
+	delayTime:1000,
+	interTime:3000,
+	autoPage:true,
+	autoPlay:true
+});
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

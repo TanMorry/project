@@ -1,0 +1,83 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+    <div class="i_tj_tt1">定制流程　<span class="font14 num"></span></div>
+    <div class="customize">
+        <div class="customize_process">
+            <p class="customize_process_img"><img src="{$pe['host_tpl']}images/dz1.jpg" height="127px;"/></p>
+
+            <div class="">1</div>
+            <div style="padding:5px 0 0"><p class="process_text">选择产品</p>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="customize_process">
+            <p class="customize_process_img"><img src="{$pe['host_tpl']}images/dz2.jpg" height="127px;"/></p>
+
+            <div class="">2</div>
+            <div style="padding:5px 0 0"><p class="process_text">选择需要定制的部位</p>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="customize_process">
+            <p class="customize_process_img"><img src="{$pe['host_tpl']}images/dz3.jpg" height="127px;"/></p>
+
+            <div class="">3</div>
+            <div style="padding:5px 0 0"><p class="process_text">选择需要的图片进行个性定制</p>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="customize_process">
+            <p class="customize_process_img"><img src="{$pe['host_tpl']}images/dz4.jpg" height="127px;"/></p>
+
+            <div class="">4</div>
+            <div style="padding:5px 0 0"><p class="process_text">完成定制并保存</p>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+    <!--分类1 Start-->
+
+    <div class="pro_tuijian mat20">
+        <div class="xuqiu_tt">
+            <div class="fl">
+                <h3>产品</h3>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div style="background:#fff;">
+            <!--<div class="index_ad"><a href="{pe_url($v['ad']['ad_url'])}"><img src="{pe_thumb($v['ad']['ad_logo'])}"></a></div>-->
+            <div class="tuijian_list" style="float:left; width:1200px; background:#fff;">
+
+                <!--{foreach($canvas_info as $k=>$v):}-->
+                <div class="prolist_r" >
+                    <a href="{pe_url('custom/detail?category_id='.$v['category_id'])}" title="" >
+                        <p class="prolist_r_img"><img src="{$pe['host_tpl']}images/pixel.gif"
+                                                      data-url="{pe_thumb($v['canvas_logo'], 180, 180)}"
+                                                      title="{$v['canvas_name']}" width="180" height="180"
+                                                      class="js_imgload"/></p>
+                        <!--{if($vv['product_hd_tag']):}-->
+                        <div class="{huodong_tag($vv['product_hd_tag'])}">{$v['canvas_hd_tag']}</div><!--{endif;}-->
+                        <div style="padding:5px 0 0">
+                            <p class="prolist_name">{$v['canvas_name']}</p>
+                            <p class="mat8"><span class="money1 fl"><span class="num mar3">¥</span>{$v['canvas_money']}</span>
+                                <s class="num c888 fr">¥ {$v['canvas_mmoney']}</s></p>
+                            <div class="clear"></div>
+                        </div>
+                   </a>
+                </div>
+                <!--{endforeach;}-->
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <!--分类1 End-->
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

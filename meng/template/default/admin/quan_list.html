@@ -1,0 +1,65 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<a href="admin.php?mod=quan" <!--{if($act=='index'):}-->class="sel"<!--{endif;}-->>优惠券列表（{$tongji['all']}）</a>
+		<a href="admin.php?mod=quan&act=log" <!--{if($act=='log' && !$_g_state):}-->class="sel"<!--{endif;}-->>领取记录（{$tongji['get']}）</a>
+		<a href="admin.php?mod=quan&act=log&state=1" <!--{if($act=='log' && $_g_state == 1):}-->class="sel"<!--{endif;}-->>使用记录（{$tongji['use']}）</a>
+		<a href="admin.php?mod=quan&act=add" id="fabu">添加优惠券</a>
+		<div class="clear"></div>
+	</div>
+	<div class="right_main">
+		<div class="tixing mab10">
+			<span class="">提示：</span>优惠券被用户领取后，将只能修改【发放数量】与【限定商品】。
+		</div>
+		<form method="post" id="form">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list">
+		<tr>
+			<th class="bgtt" width="50">ID号</th>
+			<th class="bgtt" width="50"></th>
+			<th class="bgtt aleft">优惠券名称</th>
+			<th class="bgtt" width="70">使用条件</th>
+			<th class="bgtt" width="70">限定商品</th>
+			<th class="bgtt" width="50">发放量</th>
+			<th class="bgtt" width="40">已领取</th>
+			<th class="bgtt" width="40">已使用</th>
+			<th class="bgtt" width="80">创建日期</th>
+			<th class="bgtt" width="170">有效日期</th>
+			<th class="bgtt" width="60">状态</th>
+			<th class="bgtt" width="110">操作</th>
+		</tr>
+		<!--{foreach($info_list as $v):}-->
+		<tr>
+			<td>{$v['quan_id']}</td>
+			<td><img src="{$pe['host_tpl']}images/quan.png" style="width:33px;" /></td>
+			<td class="aleft"><a href="{pe_url('quan-'.$v['quan_key'])}" target="_blank" class="cblue">{$v['quan_name']}</a><br/>面值：{$v['quan_money']}元</td>
+			<td>{$v['quan_limit']?'满'.$v['quan_limit'].'元':'无'}</td>
+			<td>{$v['product_id']?count(explode(',', $v['product_id'])).'个':'全店通用'}</td>
+			<td class="num">{$v['quan_num']}</td>
+			<td class="num"><a href="admin.php?mod=quan&act=log&id={$v['quan_id']}" target="target">{$v['quan_num_get']}</a></td>
+			<td class="num"><a href="admin.php?mod=quan&act=log&state=1&id={$v['quan_id']}" target="target">{$v['quan_num_use']}</a></td>
+			<td class="num">{pe_date($v['quan_atime'], 'Y-m-d')}</td>
+			<td class="num">{$v['quan_sdate']} 至 {$v['quan_edate']}</td>
+			<td>
+				<!--{if($v['quan_edate'] <= date('Y-m-d')):}-->
+				<span class="c888">已过期</span>
+				<!--{elseif($v['quan_sdate'] > date('Y-m-d')):}-->
+				<span class="corg">未开始</span>
+				<!--{elseif($v['quan_sdate'] <= date('Y-m-d') && $v['quan_edate'] > date('Y-m-d')):}-->
+				<span class="cgreen">进行中</span>		
+				<!--{endif;}-->		
+			</td>
+			<td>
+				<a href="admin.php?mod=quan&act=edit&id={$v['quan_id']}" class="admin_edit mar3">修改</a>
+				<a href="admin.php?mod=quan&act=del&id={$v['quan_id']}&token={$pe_token}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+			</td>
+		</tr>
+		<!--{endforeach;}-->
+		</table>
+		</form>
+	</div>
+	<div class="right_bottom">
+		<span class="fr fenye">{$db->page->html}</span>
+		<div class="clear"></div>
+	</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

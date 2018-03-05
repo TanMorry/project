@@ -1,0 +1,139 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="nav_choice">
+    <div class="choice">
+        <ul >
+            <li><a href="{pe_url('choice?category_id=0')}">小编推荐</a></li>
+            <!--{foreach((array)$category_info as $k=>$v):}-->
+                <li><a href="{pe_url('choice?category_id='.$v['category_id'])}">{$v['category_name']}</a></li>
+            <!--{endforeach;}-->
+        </ul>
+    </div>
+
+</div>
+<div class="content">
+    <div class="brand_cate"><a class="brand_hot <?php if($type == 'hot') echo color_black;?>" onclick="change_cate(this,'hot')" data-cate="hot">热门</a><a class="brand_sort <?php if($type == 'sort') echo color_black;?>" data-cate="sort" onclick="change_cate(this,'sort')">按A-Z</a></div>
+    <div class="brand_zm">
+
+        <div>
+            <div class="brand_zm_r <?php if($type == 'sort') echo brand_none;?>" id="brand_hot">
+                <div class="brand_zm_l" id="cate_info" >
+                    最热
+                </div>
+                <!--{foreach($IPlist['hot'] as $k=>$v):}-->
+                <a href="javascript:;" class="brand_cate_hot <?php if($brand_id == $v['brand_id']) echo border_bottom;?>" onclick="brand_list({$v['brand_id']},this)">{$v['brand_name']}</a>
+                <!--{if($IPlist['hot'][$k+1]):}-->
+                <span class="brand_cate_fenge">|</span>
+                <!--{endif;}-->
+                <!--{endforeach;}-->
+            </div>
+            <div class="brand_zm_r <?php if($type == 'hot') echo brand_none;?>" id="brand_sort">
+                <!--{foreach($cate_sort as $k=>$v):}-->
+                <a class="brand_cate_zimu <?php if($k == $index) echo border_bottom;?>" onclick="handleSort({$k})">{$v}</a>
+                <!--{endforeach;}-->
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="brand_sort_info <?php if($type == 'hot') echo brand_none;?>">
+            <!--{foreach($IPlist['sort'] as $k=>$v):}-->
+            <div class="brand_cate_list <?php if($k != $index) echo brand_none;?>">
+                <!--{foreach($v as $ke=>$va):}-->
+                <div class="brand_sort_list">
+                    <p class="brand_zm_l">{$va}</p>
+                    <div class="brand_list_right">
+                        <!--{foreach($IPlist['data'] as $key=>$val):}-->
+                        <!--{if($key == $va):}-->
+                        <!--{foreach($val as $key1=>$val1):}-->
+                        <a href="javascript:;" class="brand_cate_hot <?php if($brand_id == $val1['brand_id']) echo border_bottom;?>" onclick="brand_list({$val1['brand_id']},this)">{$val1['brand_name']}</a>
+                        <!--{if($val[$key1+1]):}-->
+                        <span class="brand_cate_fenge">|</span>
+                        <!--{endif;}-->
+                        <!--{endforeach;}-->
+
+                        <!--{endif;}-->
+
+                        <!--{endforeach;}-->
+                    </div>
+                </div>
+                <!--{endforeach;}-->
+            </div>
+            <!--{endforeach;}-->
+        </div>
+    </div>
+</div>
+</div>
+<div class="content2">
+
+    <section id="wrapper">
+        <div id="container"></div>
+    </section>
+
+</div>
+<script id="waterfall-tpl" type="text/x-handlebars-template">
+    //template content
+    {{#result}}
+
+    <div class="item">
+        <a href="{pe_url('product')}/{{product_id}}" class="grid">
+            <div class="imgholder">
+                <img src="{$pe['host_root']}/{{product_logo}}" />
+            </div>
+            <strong>{{product_name}}</strong>
+            <p>{{product_linian}}</p>
+            <div class="meta">by {{user_name}}</div>
+        </a>
+    </div>
+    {{/result}}
+
+</script>
+<script type="text/javascript">
+    var sortIndex = "{$index}"
+    var brandType = '{$type}'
+    var category_id = "{$category_id}"
+    $('#container').waterfall({
+        itemCls: 'item',
+        //colWidth: 222,
+        gutterWidth: 15,
+        gutterHeight:0,
+        checkImagesLoaded: true,
+        path: function(page) {
+            return "{$pe['host_root']}index.php/choicelist?c="+category_id+"&brand_id={$brand_id}&page="+page;
+            //return "{$pe['host_root']}/data/attachment/data.json?page=" + page;
+        }
+    });
+    function change_cate(obj,str){
+        if(obj != null){
+            $(obj).addClass('color_black').siblings().removeClass('color_black');
+        }
+        brandType = str;
+        if(str == 'hot'){
+            $(".brand_sort_info").addClass('brand_none');
+            $("#brand_hot").removeClass('brand_none').siblings().addClass('brand_none');
+        }else{
+            $("#brand_sort").removeClass('brand_none').siblings().addClass('brand_none');
+            handleSort(sortIndex)
+        }
+    }
+
+    function handleSort(index){
+        sortIndex = index;
+        $("#brand_sort a").eq(sortIndex).addClass('border_bottom').siblings().removeClass('border_bottom');
+        $(".brand_sort_info").removeClass('brand_none');
+        $(".brand_sort_info>.brand_cate_list").eq(sortIndex).removeClass('brand_none').siblings().addClass('brand_none');
+    }
+
+    function brand_list(brand_id,obj){
+        //根据选择的品牌显示相应的品牌(页面刷新)
+        if(brandType == 'hot'){
+            var url = "{$pe['host_root']}index.php/choice?category_id="+category_id+"&type="+brandType+"&brand_id="+brand_id;
+        }else{
+            var url = "{$pe['host_root']}index.php/choice?category_id="+category_id+"&type="+brandType+"&index="+sortIndex+"&brand_id="+brand_id;
+        }
+        $(obj).addClass('border_bottom').siblings().removeClass('border_bottom');
+        $(obj).parent().parent().siblings().find('a').removeClass('border_bottom');
+        window.location.href = url;
+    }
+
+
+
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

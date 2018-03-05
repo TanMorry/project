@@ -1,0 +1,15 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="{pe_url('article-list-'.$class_id)}"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<div class="content">
+	<div class="dingdan_info1">
+		<h3 class="mat10 center font16">{$info['article_name']}</h3>
+		<p class="mat5 center c888">发布日期：{pe_date($info['article_atime'])}　浏览量：{$info['article_clicknum']}</p>
+		<div class="danye_main mat10">{$info['article_text']}</div>
+	</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

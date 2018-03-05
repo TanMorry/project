@@ -1,0 +1,49 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<a href="admin.php?mod=brand_pic" class="sel">图片评论列表</a>
+		<div class="clear"></div>
+	</div>
+	<div class="right_main">
+		<form method="post" id="form">
+			<!--<div class="search"><input name="search" type="text" class="inputall input300" placeholder="输入图片名称" style="margin-bottom: 10px;"/><input type="submit" value="搜索" class="input_btn"></div>-->
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list">
+				<tr>
+					<th class="bgtt" width="20"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'brand_pic_id')" /></th>
+					<th class="bgtt" width="50">ID号</th>
+					<!--<th class="bgtt" width="60">排序</td>-->
+					<th class="bgtt" width="60">评价用户</th>
+					<th class="bgtt" width="150">评价内容</th>
+					<th class="bgtt" width="150">图片名称</th>
+					<th class="bgtt" width="150">图片</th>
+					<th class="bgtt" width="60">所属品牌</th>
+					<th class="bgtt" width="200">操作</th>
+				</tr>
+				<!--{foreach($comment_list as $key=>$v):}-->
+				<tr>
+					<td><input type="checkbox" name="comment_pic_id[]" value="{$v['comment_pic_id']}--{$v['pic_id']}" /></td>
+					<td>{$v['comment_pic_id']}</td>
+					<td>{$v['user_name']}</td>
+					<td class="aleft" valign="top"><a target="_blank" href="{pe_url('brand?brandid='.$v['pic_id'])}&page={$page}#{$key}">{pe_cut(pe_text($v['content']), 60, '...')}</a></td>
+					<td>{$v['brand_pic_name']}</td>
+					<td><img src="{pe_thumb($v['brand_pic_addr'])}" style="width:140px; height:56px;" /></td>
+					<td>{$v['brand_pic_bname']}</td>
+					<td>
+						<a href="admin.php?mod=brand_comment&act=edit&id={$v['comment_pic_id']}" class="admin_edit mar3">修改</a>
+						<a href="admin.php?mod=brand_comment&act=del&id={$v['comment_pic_id']}--{$v['pic_id']}&token={$pe_token}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+					</td>
+				</tr>
+				<!--{endforeach;}-->
+			</table>
+		</form>
+	</div>
+	<div class="right_bottom">
+		<span class="fl mal10">
+			<input type="checkbox" name="checkall" onclick="pe_checkall(this, 'comment_pic_id')" />
+			<button href="admin.php?mod=brand_comment&act=del&token={$pe_token}" onclick="return pe_cfall(this, 'comment_pic_id', 'form', '批量删除')">批量删除</button>
+		</span>
+		<span class="fr fenye">{$db->page->html}</span>
+		<div class="clear"></div>
+	</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

@@ -1,0 +1,54 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="javascript:app_open('back');"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<div class="content">
+	<div class="lingquan">
+		<div class="quan_name">{$info['quan_name']}</div>
+		<div class="quan_date"><span>有效日期：{$info['quan_sdate']} 至 {$info['quan_edate']}</span></div>
+		<div class="lq_l num ">¥ {$info['quan_money']}</div>
+		<div class="mat10">使用条件：<!--{if($info['quan_limit']):}-->满{$info['quan_limit']}元使用<!--{endif;}--></div>
+		<div class="mat10">限定商品：<!--{if($info['product_id']):}-->部分商品<!--{else:}-->无<!--{endif;}--></div>
+		<div class="clear"></div>
+		<!--<p class="mat5">剩余数量：{$info['quan_num'] - $info['quan_num_get']} 个</p>-->
+		<div class="quan_btn"><i></i></div>
+	</div>
+	<!--{if($info['product_id']):}-->
+	<div class="tuijian_list mat10">
+		<div style="padding-bottom:15px">
+			<div class="tuijian_tt">优惠券可用于以下商品</div>
+		</div>
+		<ul>
+		<!--{foreach($info_list as $k=>$v):}-->
+		<li>
+			<div class="li_box">
+				<a href="{pe_url('product-'.$v['product_id'])}" title="{$v['product_name']}"><img src="{$pe['host_tpl']}images/pixel.gif" data-url="{pe_thumb($v['product_logo'], 400, 400)}" title="{$v['product_name']}" class="js_imgload" /></a>
+				<p><a href="{pe_url('product-'.$v['product_id'])}" title="{$v['product_name']}">{$v['product_name']}</a></p>
+				<span>¥{$v['product_money']}</span>　<s>¥ {$v['product_mmoney']}</s>
+			</div>
+		</li>
+		<!--{endforeach;}-->
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<div class="fenye mat10 mab10">{$db->page->html}<div class="clear"></div></div>	
+	<!--{endif;}-->
+</div>
+<div style="margin-bottom:55px;"></div>
+<div class="quan_foot">
+<!--{if($info['quan_edate'] < date('Y-m-d')):}-->
+	<div class="lq_btn1 lq_btn2"><input type="button" value="优惠券已过期" /></div>
+	<!--{elseif($info['quan_num'] - $info['quan_num_get'] <= 0):}-->		
+	<div class="lq_btn1 lq_btn2"><input type="button" value="领光啦" /></div>	
+	<!--{elseif($quanlog_num):}-->
+	<div class="lq_btn1 lq_btn2"><input type="button" value="已领取" /></div>
+	<!--{else:}-->
+	<form method="post">
+	<div class="lq_btn1"><input type="submit" name="pesubmit" value="点击领取" /></div>
+	</form>		
+	<!--{endif;}-->
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

@@ -1,0 +1,77 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="user.php?mod=userbank"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<div class="content">
+	<div class="loginbox">
+		<form method="post" id="form">
+		<div class="tip_pwd mat15">账户类型：</div>
+		<div class="input_box">
+			<select name="userbank_type" class="inputselect_m">
+			<!--{foreach($ini['userbank_type'] as $k=>$v):}-->
+			<option value="{$k}">{$v}</option>
+			<!--{endforeach;}-->
+			</select>				
+		</div>
+		<div id="userbank_address">
+			<div class="tip_pwd mat10">开 户 行：</div>
+			<div class="input_box"><input type="text" name="userbank_address" value="" placeholder="例：中国建设银行北京清华园支行" class="login_input1" /></div>
+		</div>
+		<div class="tip_pwd mat10">收款账号：</div>
+		<div class="input_box"><input type="text" name="userbank_num" value="" class="login_input1" /></div>
+		<div class="tip_pwd mat10">收 款 人：</div>
+		<div class="input_box"><input type="text" name="userbank_tname" value="" class="login_input1" /></div>
+		<div class="loginbtn" style="margin-top:15px;">
+			<input type="hidden" name="pe_token" value="{$pe_token}" />
+			<input type="hidden" name="pesubmit" />	
+			<input type="button" value="提交" />
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	js_bankselect();
+	$(":input[name='userbank_type']").change(function(){
+		js_bankselect();
+	})
+	$(":button").click(function(){
+		var userbank_type = $(":input[name='userbank_type'] option:selected").val();
+		if (userbank_type != 'alipay' && userbank_type != 'tenpay' && $(":input[name='userbank_address']").val() == '') {
+			app_tip('请填写开户行');
+			return false;
+		}
+		if ($(":input[name='userbank_num']").val() == '') {
+			app_tip('请填写收款帐号');
+			return false;
+		}
+		if ($(":input[name='userbank_tname']").val() == '') {
+			app_tip('请填写收款人');
+			return false;
+		}
+		app_submit('user.php?mod=userbank&act=add', function(json){
+			if (json.result) {
+				if ('{$_g_fromto}' == 'cashout') {
+					app_open("user.php?mod=cashout&act=add", 1000);				
+				}
+				else {
+					app_open("user.php?mod=userbank", 1000);				
+				}
+			}
+		})
+	})
+})
+function js_bankselect() {
+	var userbank_type = $(":input[name='userbank_type'] option:selected").val();
+	if (userbank_type == 'alipay' || userbank_type == 'tenpay') {
+		$("#userbank_address").hide().find(":input").attr("disabled", "disabled");
+	}
+	else {
+		$("#userbank_address").show().find(":input").removeAttr("disabled");
+	}
+}
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

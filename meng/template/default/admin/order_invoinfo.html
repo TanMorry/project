@@ -1,0 +1,105 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<a href="javascript:;" class="sel">{$menutitle}</a>
+		<div class="clear"></div>
+	</div>
+	<div class="right_main mab15">
+	<div class="huiyuan_main" style="padding:0 35px 20px;">
+		<div class="liucheng mat20">订单状态</div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="order_view_bak mat10">
+		<tr>
+			<td align="right" width="80">订单编号：</td>
+			<td>{$info['order_id']}</td>
+		</tr>
+		<tr>
+			<td align="right">当前状态：</td>
+			<td>{order_stateshow($info)}</td>
+		</tr>
+		</table>
+		<div class="shixian mat20"></div>		
+		<div class="liucheng mat20">发票信息</div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="order_view_bak mat10">
+			<tr>
+				<td align="right" width="80">发票类型：</td>
+				<td>
+					<!--{if($invo_info['invo_type']==1):}-->增值税
+					<!--{else:}-->个人
+					<!--{endif;}-->
+				</td>
+			</tr>
+			<tr>
+				<td align="right" width="80">抬头：</td>
+				<td>{$invo_info['invo_name']}</td>
+			</tr>
+			<tr>
+				<td align="right" width="80">税号：</td>
+				<td>{$invo_info['invo_duty']}</td>
+			</tr>
+			<tr>
+				<td align="right" width="80">地址：</td>
+				<td>{$invo_info['invo_addr']}</td>
+			</tr>
+			<tr>
+				<td align="right" width="80">电话：</td>
+				<td>{$invo_info['invo_phone']}</td>
+			</tr>
+			<tr>
+				<td align="right" width="80">开户行：</td>
+				<td>{$invo_info['invo_bank']}</td>
+			</tr>
+			<tr>
+				<td align="right" width="80">帐号：</td>
+				<td>{$invo_info['invo_account']}</td>
+			</tr>
+		</table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="order_view_list mat20">
+		<tr>
+			<td class="bgtt1" width="" align="center" colspan="2">商品名称</td>
+			<td class="bgtt1" width="90" align="center">单价(元)</td>
+			<td class="bgtt1" width="90" align="center">数量</td>
+			<td class="bgtt1" width="110" align="center">小计(元)</td>			
+		</tr>
+		<!--{foreach($invo_list as $k=>$v):}-->
+		<tr>
+			<td style="border-right:0;width:60px">{$v['category_name']}</td>
+			<td style="border-left:0;text-align:left;"></td>
+			<td>¥ <span class="num1">{$v['product_money']}</span></td>
+			<td><span class="num1">{$v['product_num']}</span></td>
+			<td>¥ <span class="num1">{$v['product_money']*$v['product_num'] + $v['product_money_yh']}</span></td>
+		</tr>
+		<!--{endforeach;}-->
+		</table>
+		<div class="dingdan_jiesuan" style="padding:10px; line-height:30px; font-family:微软雅黑; font-size:14px;">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td>商品金额：</td>
+				<td width="100">¥ {$info['order_product_money']}</td>
+			</tr>
+			<tr>
+				<td>运费：</td>
+				<td>¥ {$info['order_wl_money']}</td>
+			</tr>
+			<!--{if($info['order_quan_money']):}-->
+			<tr>
+				<td>优惠券：</td>
+				<td>- ¥ {$info['order_quan_money']}</td>
+			</tr>
+			<!--{endif;}-->
+			<!--{if($info['order_point_use']):}-->
+			<tr>
+				<td>积分：</td>
+				<td>- ¥ {$info['order_point_money']}</td>
+			</tr>
+			<!--{endif;}-->
+			<tr>
+				<td>实际金额：</td>
+				<td class="font18 cred strong">¥ {$info['order_money']}</td>
+			</tr>
+			</table>
+			<div class="clear"></div>
+		</div>
+	</div>
+	</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

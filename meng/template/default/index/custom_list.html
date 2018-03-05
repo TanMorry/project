@@ -1,0 +1,47 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<!--{foreach($category_indexlist as $k=>$v):}-->
+	<div class="pro_tuijian mat20">
+		<div class="xuqiu_tt">
+			<div class="fl">
+				<h3>{$v['category_name']}</h3>
+			</div>
+			<a href="{pe_url('product-list-'.$v['category_id'])}" title="{$v['category_name']}" target="_blank" class="c888 fr mat10 font14">更多 ></a>
+			<!--{if(is_array($cache_category_arr[$v['category_id']])):}-->
+			<div class="xuqiu_tt_r">
+				热门分类：
+				<span style="overflow:hidden; height:16px;">
+				<!--{foreach($cache_category_arr[$v['category_id']] as $kk=>$vv):}-->
+				<a href="{pe_url('product-list-'.$kk)}" title="{$vv['category_name']}" target="_blank">{$vv['category_name']}</a>
+				<span class="mal10 mar10 xian"></span>
+				<!--{endforeach;}-->
+				</span>
+			</div>
+			<!--{endif;}-->
+			<div class="clear"></div>
+		</div>
+		<div style="background:#fff;">
+			<div class="index_ad"><a href="{pe_url($v['ad']['ad_url'])}"><img src="{pe_thumb($v['ad']['ad_logo'])}"></a></div>
+			<div class="tuijian_list" style="float:left; width:948px; background:#fff;">
+				<!--{foreach($v['product_list'] as $kk=>$vv):}-->
+				<div class="prolist_r" style="height:0px;" <!--{if(($kk+1)%4==0):}-->style="margin-right:0"<!--{endif;}-->>
+					<a href="{pe_url('product-'.$vv['product_id'])}" title="{$vv['product_name']}" target="_blank">
+					<p class="prolist_r_img"><img src="{$pe['host_tpl']}images/pixel.gif" data-url="{pe_thumb($vv['product_logo'], 180, 180)}" title="{$vv['product_name']}" width="180" height="180" class="js_imgload" /></p>
+					<!--{if($vv['product_hd_tag']):}--><div class="{huodong_tag($vv['product_hd_tag'])}">{$vv['product_hd_tag']}</div><!--{endif;}-->
+					<div style="padding:5px 0 0">
+						<p class="prolist_name">{$vv['product_name']}</p>
+						<p class="mat8"><span class="money1 fl"><span class="num mar3">¥</span>{$vv['product_money']}</span> <s class="num c888 fr">¥ {$vv['product_mmoney']}</s></p>
+						<div class="clear"></div>
+					</div>
+					</a>
+				</div>
+				<!--{endforeach;}-->
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<!--{endforeach;}-->
+	<!--分类1 End-->
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

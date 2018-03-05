@@ -1,0 +1,44 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="user.php"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<div class="main" style="margin-top:0">
+	<div class="jifen_box"><i></i>账户余额：<span class="font18 corg">{$info['user_money']}</span> 元</div>
+	<div class="side_btn">
+		<ul>
+			<li><a href="user.php?mod=cashout&act=add" class="side_tx">提 现</a></li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<!--{if(!count($info_list)):}-->
+	<div class="nodata">
+		<div class="nodata_img"></div>
+		<div class="nodata_tip">暂无信息</div>
+	</div>
+	<!--{endif;}-->
+	<div class="jf_box">
+		<!--{foreach($info_list as $k=>$v):}-->
+		<div class="jf_list">
+			<div class="jifen_l">
+				<p>{$v['moneylog_text'] ? $v['moneylog_text'] : $ini['moneylog_type'][$v['moneylog_type']]}</p>
+				<span class="c888">{pe_date($v['moneylog_atime'])}</span>
+			</div>
+			<div class="jifen_r">
+				<p>
+				<!--{if($v['moneylog_in'] > 0):}-->
+				<span class="num">+{$v['moneylog_in']}</span>
+				<!--{else:}-->
+				<span class="num">-{$v['moneylog_out']}</span>			
+				<!--{endif;}-->
+				</p>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!--{endforeach;}-->
+	</div>
+	<div class="fenye mab10">{$db->page->html}</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

@@ -1,0 +1,70 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<a href="admin.php?mod=brand_pic" class="sel">图片列表（{$tongji['all']}）</a>
+		<a href="admin.php?mod=brand_pic&act=add" id="fabu">添加图片</a>
+		<div class="clear"></div>
+	</div>
+	<div class="right_main">
+		<form method="post" id="form">
+			<div class="search"><input name="search" type="text" class="inputall input300" placeholder="输入原图名称" style="margin-bottom: 10px;"/><input type="submit" value="搜索" class="input_btn"></div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list">
+		<tr>
+			<!--<th class="bgtt" width="20"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'brand_pic_id')" /></th>-->
+			<th class="bgtt" width="50">ID号</th>
+			<!--<th class="bgtt" width="60">排序</td>-->
+			<th class="bgtt" width="150">图片名称</td>
+			<th class="bgtt" width="450">介绍</th>
+			<th class="bgtt" width="150">画布</th>
+			<th class="bgtt" width="150">ip图片</th>
+			<th class="bgtt" width="150">图片</th>
+			<th class="bgtt">设计者</th>
+			<th class="bgtt">上传时间</th>
+			<th class="bgtt" width="">状态</th>
+			<th class="bgtt" width="">操作</th>
+		</tr>
+		<!--{foreach($info_list as $v):}-->
+		<tr>
+			<!--<td><input type="checkbox" name="brand_pic_id[]" value="{$v['brand_pic_id']}" /></td>-->
+			<td>{$v['id']}</td>
+			<!--<td><input type="text" name="brand_order[{$v['brand_id']}]" value="{$v['brand_order']}" class="inputtext input30 center" /></td>-->
+			<td>{$v['name']}</td>
+			<td>{$v['intro']}</td>
+			<td><a href="{$v['canvas_model']}" target="_blank"><img src="{pe_thumb($v['canvas_model'])}" style="width:100px; height:100px;" /></a></td>
+			<td><a href="{$v['brand_pic_addr']}" target="_blank"><img src="{pe_thumb($v['brand_pic_addr'])}" style="width:100px; height:100px;" /></a></td>
+			<td><a href="{$v['pic_addr']}" target="_blank"><img src="{pe_thumb($v['pic_addr'])}" style="width:100px; height:100px;" /></a></td>
+			<td>{$v['designer_name']}</td>
+			<td>{pe_date($v['up_time'])}</td>
+			<!--{if($v['status'] == 0):}-->
+			<td>未审核</td>
+			<td>
+				<!--<a href="admin.php?mod=brand_pic&act=detail&id={$v['brand_pic_id']}" class="admin_edit" style="width:60px;">通过</a>-->
+				<a href="admin.php?mod=design&act=status&status=1&id={$v['id']}&token={$pe_token}" class="admin_edit" style="width:60px;">通过</a>
+				<!--<a href="admin.php?mod=brand_pic&act=edit&id={$v['brand_pic_id']}" class="admin_edit mar3">修改</a>-->
+				<!--<a href="admin.php?mod=brand_pic&act=del&id={$v['brand_pic_id']}&token={$pe_token}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>-->
+			</td>
+			<!--{else:}-->
+			<td>已通过</td>
+			<td>
+				<a href="admin.php?mod=design&act=status&status=0&id={$v['id']}&token={$pe_token}" class="admin_del" style="width:60px;">下架</a>
+				<!--<a href="admin.php?mod=brand_pic&act=detail&id={$v['brand_pic_id']}" class="admin_del" style="width:60px;">下架</a>-->
+				<!--<a href="admin.php?mod=brand_pic&act=edit&id={$v['brand_pic_id']}" class="admin_edit mar3">修改</a>-->
+				<!--<a href="admin.php?mod=brand_pic&act=del&id={$v['brand_pic_id']}&token={$pe_token}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>-->
+			</td>
+			<!--{endif;}-->
+		</tr>
+		<!--{endforeach;}-->
+		</table>
+		</form>
+	</div>
+	<div class="right_bottom">
+		<span class="fl mal10">
+			<input type="checkbox" name="checkall" onclick="pe_checkall(this, 'brand_pic_id')" />
+			<button href="admin.php?mod=brand_pic&act=del&token={$pe_token}" onclick="return pe_cfall(this, 'brand_pic_id', 'form', '批量删除')">批量删除</button>
+			<!--<button href="admin.php?mod=brand_pic&act=order&token={$pe_token}" onclick="pe_doall(this,'form')">更新排序</button>-->
+		</span>
+		<span class="fr fenye">{$db->page->html}</span>
+		<div class="clear"></div>
+	</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

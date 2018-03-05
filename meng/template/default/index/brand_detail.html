@@ -1,0 +1,264 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<div class="content_left">
+		<div class="brand_detail_banner">
+			<p class="title"><span class="fangkuai"></span><span>图片详情</span></p>
+		</div>
+<!--		<div class="pic_marquee">
+			<div id="marquee2">
+				<ul>
+					&lt;!&ndash;{foreach($picList as $ke=>$va):}&ndash;&gt;
+					<li>
+						<div class="img">
+							<a class="img_a"><img src="{pe_thumb($va['brand_pic_addr'],950,950)}" /></a>
+						</div>
+					</li>
+					&lt;!&ndash;{endforeach;}&ndash;&gt;
+				</ul>
+			</div>
+			<ul class="marquee2-trigger hidden" >
+				<a id="goL" href="javascript:;"><li id="goL_a">上一个</li></a>
+				<a id="goR" href="javascript:;"><li id="goR_a">下一个</li></a>
+			</ul>
+		</div>-->
+
+        <div id="slideBox" class="slideBox">
+            <div class="hd" style="display: none;">
+                <ul>
+                    <!--{foreach($picList as $ke=>$va):}-->
+                    <li class="" data-id="{$va['brand_pic_id']}">{$ke+1}</li>
+                    <!--{endforeach;}-->
+                </ul>
+            </div>
+            <div class="bd">
+                <div class="tempWrap">
+                    <ul>
+                        <!--{foreach($picList as $ke=>$va):}-->
+                        <li>
+							<div style="position:relative;">
+								　　<img src="{pe_thumb($va['brand_pic_addr'],950,950)}" />
+								　　<div class="text_box">
+								　　　　<p>{pe_cut(pe_text($va['brand_pic_name']), 20, '...')}</p>
+										<p>{$va['brand_pic_text']}</p>
+								　　</div>
+							</div>
+
+                        </li>
+                        <!--{endforeach;}-->
+                    </ul>
+                </div>
+            </div>
+            <a class="prev" href="javascript:void(0)"></a>
+            <a class="next" href="javascript:void(0)"></a>
+        </div>
+        <script>jQuery(".slideBox").slide({mainCell:".bd ul",autoPlay:false});</script>
+		<p class="evaluate">
+			<span onclick="zan_add('{$picList[0]['brand_pic_id']}');" class="zan_num_<?php if($iszan){ echo red;}else{echo grey;}?>" id="zan_num">{$picList[0]['brand_pic_zan']}</span>
+		</p>
+		<div class="clear"></div>
+		<div class="pic_list">
+			<div id="slider">
+				<!--{foreach($temList as $k=>$v):}-->
+				<div class="spic">
+					<img src="{pe_thumb($v['canvas_logo'],150,250)}"/>
+					<a href="javascript:void(0)" onclick="detail_dz(this)" data-url="{pe_url('custom/detail?category_id='.$v['category_id'])}" class="image-slider_button">我要定制</a>
+				</div>
+				<!--{endforeach;}-->
+			</div>
+			<div class="clear"></div>
+
+			<div class="customization_collect">
+				<a href="javascript:collect_add('{$picList[0]['brand_pic_id']}');" class="collect border_button_<?php if($iscollect){ echo grey;}else{echo red;}?>"  id="js_collectnum"><?php if($iscollect){ echo '已收藏';}else{echo '收藏';}?></a></div>
+			<div class="clear"></div>
+
+		</div>
+		<div class="clear"></div>
+
+		<div><p class="title"><span class="fangkuai"></span><span>用户评价</span></p></div>
+		<div class="clear"></div>
+
+		<div class="detail_com_list">
+			<div class="post_content">
+				<p class="pingjia_num">有<spn style="color: red;">{$picList[0]['brand_pic_comnum']}</spn>人评价</p>
+				<div>
+					<form method="post" id="form">
+						<textarea class="post_kuang" name="comment_content" ></textarea>
+						<!--<span class="detail_submit" onclick="brand_comment_add('{$picList[0]['brand_pic_id']}')" >发 表</span>-->
+						<input type="hidden" name="pic_id" value="{$picList[0]['brand_pic_id']}"/>
+						<input type="hidden" name="pesubmit" />
+						<input type="button" class="detail_submit" value="发 表" onclick="brand_comment_add()"/>
+					</form>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="user_com_list">
+				<ul class="com_content_list">
+					<!--{foreach($com as $k=>$v):}-->
+					<li class="com_content" id="{$k}">
+						<p class="user_logo"><img align="absmiddle" src="{pe_thumb($v['user_logo'],80,80)}"><span class="l_z_name" style="font-size: 16px;">{$v['user_name']}</span></p>
+						<p class="content_detail">{$v['content']}</p>
+						<p class="date_reply"><span class="date">{date('Y-m-d H:i:s', $v['createtime'])}</span><a class="reply">回复</a></p>
+						<form method="post" class="reply_post brand_none">
+							<textarea class="reply_kuang" name="comment_content_reply" ></textarea>
+							<input type="hidden" name="pic_id" value="{$picList[0]['brand_pic_id']}"/>
+							<input type="hidden" name="com_pid" value="{$v['comment_pic_id']}"/>
+							<input type="hidden" name="pesubmit_reply" />
+							<input type="button" class="detail_submit" onclick="brand_comment_reply(this)" value="发 表">
+						</form>
+						<ul >
+
+							<!--{$i=0;}-->
+							<!--{foreach($com_list as $ke=>$va):}-->
+							<!--{if($v['comment_pic_id']==$va['comment_pid']):}-->
+								<!--{if($i==0):}-->
+								<p class="reply_bottom"></p>
+								<!--{endif;}-->
+							<li class="reply_con">
+									<div class="replay_user_logo" ><img style="float: left;" src="{pe_thumb($va['user_logo'],40,40)}"/></div>
+									<div class="reply_detail"><span class="user_name" style="color: #2d64b3">{$va['user_name']}: </span><span class="detail_con">{$va['content']}</span><p class="con_date">{date('Y-m-d H:i:s', $va['createtime'])}<!--{if($_SESSION['admin_id'] == 1):}--><a onclick="com_del(this,{$va['comment_pic_id']});" style="color: red;">&emsp;删除</a><!--{endif;}--></p></div>
+								</li>
+							<!--{$i++;}-->
+							<!--{endif;}-->
+							<!--{endforeach;}-->
+
+							<div class="clear"></div>
+						</ul>
+					</li>
+					<!--{endforeach;}-->
+				</ul>
+			</div>
+		</div>
+		<div class="fenye mat15">{$db->page->html}</div>
+	</div>
+	<div class="fr detail_again">
+		<div class="ald-hd ">
+			<s></s>
+			<span>类似推荐</span>
+		</div>
+		<div id="marquee">
+			<ul>
+				<!--{foreach($tuijianList as $ke=>$va):}-->
+				<li>
+					<div class="img">
+						<a target="_blank" href="{pe_url('product')}/{$va['product_id']}" >
+							<img src="{pe_thumb($va['product_logo'],150,150)}" />
+						</a>
+						<p class="look_price">{$va['product_money']}元</p>
+					</div>
+				</li>
+				<!--{endforeach;}-->
+			</ul>
+		</div>
+
+		<ul class="marquee-trigger">
+			<li id="goU">上一个</li>
+			<li id="goD">下一个</li>
+		</ul>
+	</div>
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#slider').slider({ speed: 500 });
+        $('#marquee').kxbdSuperMarquee({
+            distance:540,
+            time:5,
+            isAuto:false,
+            btnGo:{up:'#goD',down:'#goU'},
+            direction:'down'
+        });
+	});
+	$(".reply").click(function(){
+		var $detail_post = $(this).parent().next('form');
+		if($detail_post.hasClass('brand_none')){
+			$(".reply_post").addClass('brand_none');
+			$detail_post.removeClass('brand_none');
+		}else{
+			$detail_post.addClass('brand_none');
+		}
+	})
+
+	function com_del(obj,id){
+		pe_confirm('删除',function(){
+			pe_getinfo("{$pe['host_root']}index.php?mod=brand&act=del_reply&id="+id, function(json){
+				if(json.result){
+					$(obj).parent().parent().parent().remove();
+				}
+			});
+		})
+	}
+
+	//收藏图片
+	function collect_add(id) {
+		pe_getinfo("{$pe['host_root']}index.php?mod=brand&act=collect&id="+id, function(json){
+			if(json.result){
+				var collect = $("#js_collectnum");
+				if(collect.hasClass('border_button_red')){
+					collect.removeClass('border_button_red').addClass('border_button_grey').text('已收藏');
+				}else{
+					collect.removeClass('border_button_grey').addClass('border_button_red').text('收藏');
+				}
+			}
+		});
+	}
+	//赞图片
+	function zan_add(id) {
+		pe_getinfo("{$pe['host_root']}index.php?mod=brand&act=zan&id="+id, function(json){
+			if(json.result){
+				var zan = $("#zan_num");
+				if(zan.hasClass('zan_num_red')){
+					zan.text(zan.text()*1-1);
+					zan.removeClass('zan_num_red').addClass('zan_num_grey');
+				}else{
+					zan.text(zan.text()*1+1);
+					zan.removeClass('zan_num_grey').addClass('zan_num_red')
+				}
+			}
+		});
+	}
+	//发表评论
+	function brand_comment_add(){
+		var content = $("textarea[name='comment_content']").val();
+//		alert(filter(content));
+		$("textarea[name='comment_content']").val(filter(content));
+//		return false;
+		detail_pe_submit("{$pe['host_root']}index.php?mod=brand&act=post_com",$("#form"), function(json){
+			if(json.result){
+				location.reload()
+			}
+		});
+	}
+
+	//回复评论
+	function brand_comment_reply(obj){
+		detail_pe_submit("{$pe['host_root']}index.php?mod=brand&act=reply_com",$(obj).parent(), function(json){
+			if(json.result){
+				location.reload()
+			}
+		});
+	}
+
+	//ajax表单post提交
+	function detail_pe_submit(url,obj,func) {
+		$.post(url, obj.serialize(), function(json){
+			if (json.show != '') pe_tip(json.show);
+			func(json);
+		}, "json");
+	}
+
+	/*
+	跳转到定制编辑页面
+	 */
+	function detail_dz(obj){
+        var baseUrl = $(obj).attr('data-url');
+        var currentPicId = $("#slideBox>.hd .on").attr('data-id');
+        window.open(baseUrl+'&brand_pic_id='+currentPicId);
+        return false;
+    }
+
+
+</script>
+<style type="text/css">
+body{background:#f8f8f8;}
+</style>
+<!--{include(pe_tpl('footer.html'));}-->

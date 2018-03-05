@@ -1,0 +1,38 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="user.php"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<div class="main">
+	<!--{if(!count($info_list)):}-->
+	<div class="nodata">
+		<div class="nodata_img"></div>
+		<div class="nodata_tip">暂无信息</div>
+	</div>
+	<!--{endif;}-->
+	<!--{foreach($info_list as $v):}-->
+	<div class="dingdan_yh mat10" style="padding:0 10px;">
+		<div class="fl yh_l">
+			<div style="padding:10px;">
+				<a href="{pe_url('quan-'.$v['quan_key'])}">{$v['quan_name']}</a>
+				<div class="font12 mat10 c888">使用期限 {$v['quan_sdate']} - {$v['quan_edate']}</div>
+			</div>
+		</div>
+		<div class="fr yh_r" <!--{if($v['quanlog_state']>0):}-->style="background:#aaa"<!--{endif;}-->>
+			<div style="padding:10px;">
+				<p class="yh_price">¥{$v['quan_money']}</p>
+				<div class="mat5">{$v['product_id']?'限定商品':'&nbsp;'}</div>
+				<div class="mat5">满 {$v['quan_limit']} 使用</div>
+			</div>
+			<!--{if($v['quanlog_state']>0):}-->
+			<div class="yz_0{$v['quanlog_state']}"><i></i></div>
+			<!--{endif;}-->
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!--{endforeach;}-->
+	<div class="fenye mab10">{$db->page->html}</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

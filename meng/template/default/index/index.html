@@ -1,0 +1,105 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<div class="jdt_banner">
+		<ul class="banList">
+			<!--{$index_jdt = 1;}-->
+			<!--{foreach($cache_ad['index_jdt'] as $k=>$v):}-->
+			<li <!--{if($index_jdt++==1):}-->class="active1"<!--{endif;}-->><a href="{$v['ad_url']}" target="_blank"><img src="{pe_thumb($v['ad_logo'])}"/></a></li>
+			<!--{endforeach;}-->
+		</ul>
+		<div style="position:relative; width:710px; margin:0 auto; z-index:100">
+			<div class="fomW">
+				<div class="jsNav">
+					<!--{$index_jdt = 1;}-->
+					<!--{foreach($cache_ad['index_jdt'] as $v):}-->
+					<a href="javascript:;" class="trigger <!--{if($index_jdt++==1):}-->current<!--{endif;}-->"></a>
+					<!--{endforeach;}-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="fr action_list">
+		<div class="action_tt">
+			<h3 class="fl">{$cache_class[1]['class_name']}</h3>
+			<a class="fr" href="{pe_url('article-list-1')}">更多 ></a>
+			<div class="clear"></div>
+		</div>
+		<ul>
+			<!--{foreach($notice_list as $k=>$v):}-->
+			<li <!--{if($k>=7):}-->style="border-bottom:0"<!--{endif;}-->><a href="{pe_url('article-'.$v['article_id'])}" title="{$v['article_name']}" target="_blank">{$v['article_name']}</a>{pe_date($v['article_atime'], 'm-d')}</li>
+			<!--{endforeach;}-->
+		</ul>
+	</div>
+	<div class="clear"></div>
+	<!--商品推荐 Start-->
+	<div class="i_tj_tt1">新品推荐　<span class="font14 num">NEW PRODUCTS</span></div>
+	<div class="i_tjsp_r">
+		<!--{foreach($product_newlist as $k=>$v):}-->
+		<div class="i_prolist_1" <!--{if(($k+1)%5==0):}-->style="padding-right:0; border-right:0"<!--{endif}-->>
+		<a href="{pe_url('product-'.$v['product_id'])}" title="{$v['product_name']}" target="_blank">
+			<p class="i_prolist_img"><img src="{$pe['host_tpl']}images/pixel.gif" data-url="{pe_thumb($v['product_logo'], 195, 195)}" title="{$v['product_name']}" width="195" height="195" class="js_imgload" /></p>
+			<!--{if($v['product_hd_tag']):}--><div class="{huodong_tag($v['product_hd_tag'])}">{$v['product_hd_tag']}</div><!--{endif;}-->
+			<div class="brand_have_com">
+				<p class="prolist_name">{pe_cut(pe_text($v['product_name']), 13, '...')}</p>
+				<p class="mat8"><span class="money1 fl"><span class="num mar3">¥</span>{$v['product_money']}</span> <s class="num c888 fr">¥ {$v['product_mmoney']}</s></p>
+				<div class="clear"></div>
+			</div>
+		</a>
+	</div>
+	<!--{endforeach;}-->
+	<div class="clear"></div>
+</div>
+<!--商品推荐 End-->
+<!--分类1 Start-->
+<!--{foreach($brand_indexlist as $k=>$v):}-->
+<div class="pro_tuijian mat20">
+	<div class="xuqiu_tt">
+		<div class="fl">
+			<h3>{$v['brand_name']}</h3>
+		</div>
+		<a href="{pe_url('brand/list?brand_id='.$v['brand_id'])}" title="{$v['brand_name']}" target="_blank" class="c888 fr mat10 font14">更多 ></a>
+		<div class="clear"></div>
+	</div>
+	<div style="background:#fff;">
+		<!--<div class="index_ad"><a href="{pe_url($v['ad']['ad_url'])}"><img src="{pe_thumb($v['ad']['ad_logo'])}"></a></div>-->
+		<div class="tuijian_list" style="float:left; width:1200px; background:#fff;">
+		<!--{foreach($v['brand_pic_list'] as $kk=>$vv):}-->
+			<div class="prolist_r" <!--{if(($kk+1)%4==0):}-->style="margin-right:0"<!--{endif;}-->>
+			<a target="_blank" href="{pe_url('brand?pic_id='.$vv['brand_pic_id'])}"  title="{$vv['brand_pic_name']}">
+				<img class="brand_pic" src="{pe_thumb($vv['brand_pic_addr'],250,250)}" />
+			</a>
+			<div class="brand_com_left">
+				<p >{pe_cut(pe_text($vv['brand_pic_name']), 20, '...')}</p>
+				<p>{pe_cut(pe_text($vv['brand_pic_text']), 25, '...')}</p>
+			</div>
+			<!--<p class="mat8"><span class="money1 fl"><span class="num mar3">¥</span>{$vv['product_money']}</span> <s class="num c888 fr">¥ {$vv['product_mmoney']}</s></p>-->
+			<div class="brand_com">
+
+				<!--{if(is_array($vv['comment'])):}-->
+				<!--{foreach($vv['comment'] as $key=>$va):}-->
+				<p class="<?php if($vv['comment'][$key+1]) echo com_list;?>"><img src="{pe_thumb($va['user_logo'],35,35)}" class="user_logo"><span class="user_comment">{pe_cut(pe_text($va['content']), 35, '...')}</span></p>
+				<!--{endforeach;}-->
+				<!--{endif;}-->
+			</div>
+
+			<p class="num"><span class="comnum">{$vv['brand_pic_comnum']}</span><span class="zan_num_grey">{$vv['brand_pic_zan']}</span></p>
+		</div>
+		<!--{endforeach;}-->
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+<!--{endforeach;}-->
+<!--分类1 End-->
+</div>
+<script type="text/javascript" src="{$pe['host_tpl']}js/jquery.banner.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".jdt_banner").swBanner();
+	})
+</script>
+<style type="text/css">
+	body{background:#fafafa;}
+</style>
+<!--{include(pe_tpl('footer.html'));}-->

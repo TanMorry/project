@@ -1,0 +1,71 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="user.php"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<div class="main" style="margin-top:0">
+	<div class="hy_tt">
+		<ul>
+		<li><a href="{$pe['host_root']}user.php?mod=order" <!--{if(!$_g_state):}-->class="sel"<!--{endif;}-->>全部({$tongji['all']})</a></li>
+		<li><a href="{$pe['host_root']}user.php?mod=order&state=wpay" <!--{if($_g_state=='wpay'):}-->class="sel"<!--{endif;}-->>待付款({$tongji['wpay']})</a></li>
+		<li><a href="{$pe['host_root']}user.php?mod=order&state=wsend" <!--{if($_g_state=='wsend'):}-->class="sel"<!--{endif;}-->>待发货({$tongji['wsend']})</a></li>
+		<li><a href="{$pe['host_root']}user.php?mod=order&state=wget" <!--{if($_g_state=='wget'):}-->class="sel"<!--{endif;}-->>待收货({$tongji['wget']})</a></li>
+		<li><a href="{$pe['host_root']}user.php?mod=order&state=wpj" <!--{if($_g_state=='wpj'):}-->class="sel"<!--{endif;}-->>待评价({$tongji['wpj']})</a></li>
+		</ul>
+	</div>
+	<!--{if(!count($info_list)):}-->
+	<div class="nodata">
+		<div class="nodata_img"></div>
+		<div class="nodata_tip">暂无信息</div>
+	</div>
+	<!--{endif;}-->
+	<!--{foreach($info_list as $v):}-->
+	<div class="dingdan_tt" style="font-size:13px">
+		 <span class="fl c666">{pe_date($v['order_atime'])}</span>
+		 <span class="fr">{order_stateshow($v)}</span>
+		 <div class="clear"></div>
+	</div>
+	<div class="dingdan_info" style="padding:0;">
+		<!--{foreach($v['product_list'] as $kk => $vv):}-->
+		<a href="user.php?mod=order&act=view&id={$v['order_id']}" class="order_a">
+			<div class="dingdan_img"><img src="{pe_thumb($vv['product_logo'], 100, 100)}" /></div>
+			<div class="dingdan_name">
+				<p>{$vv['product_name']}</p>
+				<div class="c888 num font12 mat5">¥{$vv['product_money']}(×{$vv['product_num']})</div>
+				<!--{if($vv['prorule_name']):}-->
+				<p class="c888 mat5 font12"><!--{foreach(unserialize($vv['prorule_name']) as $vvv):}-->[{$vvv['name']}：{$vvv['value']}]&nbsp;&nbsp;<!--{endforeach;}--></p>
+				<!--{endif;}-->
+			</div>
+			<div class="clear"></div>
+		</a>
+		<div class="xuxian2"></div>
+		<!--{endforeach;}-->
+		<div class="yingfu">
+			<div class="order_yf fr">合计：¥ <span class="font16">{$v['order_money']}</span> (含运费¥{$v['order_wl_money']})</div>
+			<div class="clear"></div>
+			<div class="fr" style="padding:5px 10px 10px;">
+				<!--{if($v['order_state'] == 'wpay'):}-->
+				<a class="tag_org fl" href="index.php?mod=order&act=pay&id={$v['order_id']}">立即付款</a>
+				<!--<a class="tag_gray fl mal10" href="javascript:app_iframe('user.php?mod=order&act=close&id={$v['order_id']}')">取消订单</a>-->
+				<a class="tag_gray fl mal10" href="" onclick="return pe_cfone2(this, '由于我们是个性化定制，取消订单会导致资源浪费，请联系客服QQ')">取消订单</a>
+				<!--{elseif($v['order_state'] == 'wsend'):}-->
+				<!--<a class="tag_gray fl" href="javascript:app_iframe('user.php?mod=order&act=close&id={$v['order_id']}')">取消订单</a>-->
+				<a class="tag_gray fl" href="" onclick="return pe_cfone2(this, '由于我们是个性化定制，取消订单会导致资源浪费，请联系客服QQ')">取消订单</a>
+				<!--{elseif($v['order_state'] == 'wget' && $v['order_payway'] == 'alipay_db'):}-->
+				<a class="tag_org fl" href="javascript:alert('支付宝担保交易，需要您登录支付宝网站确认收货');">确认收货</a>
+				<!--{elseif($v['order_state'] == 'wget' && $v['order_payway'] != 'cod'):}-->
+				<a class="tag_org fl" href="javascript:app_confirm('已收到商品', 'user.php?mod=order&act=success&id={$v['order_id']}&token={$pe_token}');">确认收货</a>
+				<!--{elseif($v['order_state'] == 'success' && !$v['order_comment']):}-->
+				<a class="tag_org fl" href="user.php?mod=order&act=comment&id={$v['order_id']}">评价</a>
+				<!--{endif;}-->
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<!--{endforeach;}-->
+	<div class="fenye mab10">{$db->page->html}</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

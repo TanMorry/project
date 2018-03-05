@@ -1,0 +1,21 @@
+<script type="text/javascript" src="{$pe['host_root']}include/js/jquery.scrollLoading.js"></script>
+<script type=text/javascript>
+$(function(){
+	$("img.js_imgload").scrollLoading();
+});
+//顶部菜单点击
+function top_menu() {
+	if ($("#top_menu").is(":hidden")) {
+		$("#top_menu").show();
+	}
+	else {
+		$("#top_menu").hide();	
+	}
+	$("#top_menu a").live("click", function(){
+		$("#top_menu").hide();
+	})
+}
+pe_loadscript("{$pe['host_root']}index.php?mod=notice");
+</script>
+</body>
+</html>

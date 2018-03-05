@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>效果图设计</title>
+	<link type="text/css" rel="stylesheet" href="{$pe['host_tpl']}css/style.css" />
+	<script type="text/javascript" src="{$pe['host_root']}include/js/jquery.js"></script>
+	<script type="text/javascript" src="{$pe['host_root']}include/js/index.js"></script>
+</head>
+
+<body>
+
+<ul>
+	<li><img src="11287113923_57d37ed9d3_q.jpg" /></li>
+	<li><img src="8095683964_9e27753908_q.jpg" /></li>
+	<li><img src="8018956825_67bf62c098_q.jpg" /></li>
+	<li><img src="7587724752_cdb9f0c444_q.jpg" /></li>
+	<li><img src="7587738254_707a32f27b_q.jpg" /></li>
+	<li><img src="8095680852_893f685cbd_q.jpg" /></li>
+	<li><img src="8018953043_c6ef9e3b29_q.jpg" /></li>
+	<li><img src="7445019824_914dea4ac3_q.jpg" /></li>
+</ul>
+<select id="canvas" onChange="showcanvas()">
+	<!-- 根据id获取value，onchange（）触发函数move（）修改二级select的text值实现联动 -->
+	<option selected value="s1">-- 请选择 --</option>
+	<!--默认选中-->
+	<option  value="SC">SC</option>
+	<option   value="BJ">BJ</option>
+	<option   value="TJ">TJ</option>
+</select>
+<select id="s1" onChange="move()">
+	<!-- 根据id获取value，onchange（）触发函数move（）修改二级select的text值实现联动 -->
+	<option selected value="s1">-- 请选择 --</option>
+	<!--默认选中-->
+	<option  value="SC">SC</option>
+	<option   value="BJ">BJ</option>
+	<option   value="TJ">TJ</option>
+</select>
+<select id="s2">
+	<option selected>-- 请选择 --</option>
+	<!--默认选中，动态生成option -->
+</select>
+<script>
+	function move()
+	{
+		var s1=document.getElementById("s1");
+		var s2=document.getElementById("s2");
+		<!-- 获取一级和二级的属性-->
+		var add;
+		if(s1.value=="SC")
+		{
+			add=new Array("CD","DZ","MY","NC");
+			<!--比对value值，实现对应二级text值的动态生成-->
+		}else if(s1.value=="BJ")
+		{
+			add=new Array("HD","CY","WFJ");
+			<!--比对value值，实现对应二级text值的动态生成-->
+		}else if(s1.value=="TJ")
+		{
+			add=new Array("TJG","TJ","TJY");
+			<!--比对value值，实现对应二级text值的动态生成-->
+		}else if(s1.value=="s1")
+		{
+			add=new Array("请选择");
+		}
+		else
+		{
+			add=null;
+			<!--若没有就为空，当然不可能出现的-->
+		}
+
+		s2.length=0;
+		for(var i=0;i<add.length;i++)
+		{
+			var ss=new Option();
+			ss.text=add[i].split()[0];
+
+			s2.add(ss);
+			<!--把text值添加到二级select中，显示出来-->
+		}
+
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    width: 140px;
+    line-height: 30px;
+    font-size: 1.25em;
+    text-align: center;
+    font-weight: 700;
+    color:#FF5722;
+    background-color: white;
+    border:1px solid #FF5722;
+    display: inline-block;
+}
+
+

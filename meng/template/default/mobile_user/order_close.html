@@ -1,0 +1,57 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="javascript:app_iframe_close();"></a></div>
+	<div>取消订单</div>
+</div>
+<div class="content">
+	<form method="post" id="form">
+	<div class="user_box mat10">
+		<div class="tip_box">
+			<span class="user_left">订单编号：</span>
+			<span class="user_right">{$info['order_id']}</span>
+		</div>
+		<div class="tip_box">
+			<span class="user_left">实付金额：</span>
+			<span class="user_right">
+				<span>{$info['order_money']} 元</span>
+				<!--{if($info['order_pstate']):}-->
+				<span class="cgreen"> (已支付)</span>
+				<!--{else:}-->
+				<span class="cred"> (未支付)</span>
+				<!--{endif}-->
+			</span>
+		</div>
+		<div class="tip_box">
+			<span class="user_left">支付方式：</span>
+			<span class="user_right">{$cache_payway[$info['order_payway']]['payway_name']}</span>
+		</div>	
+		<div class="tip_box">
+			<span class="user_left">取消原因：</span>
+			<span class="user_right">
+				<input type="text" name="order_closetext" class="user_input1" placeholder="请输入订单取消原因"/>
+			</span>
+		</div>
+	</div>
+	<div class="loginbtn" style="margin-top:15px;">
+		<input type="hidden" name="pe_token" value="{$pe_token}" />
+		<input type="hidden" name="pesubmit" />
+		<input type="button" value="提 交" />
+	</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(":button").click(function(){
+		if ($(":input[name='order_closetext']").val() == '') {
+			app_tip('请填写订单取消原因');
+			return false;
+		}
+		app_submit("user.php?mod=order&act=close&id={$order_id}", function(json){
+			if (json.result) {
+				app_iframe_close(true, 1000);
+			}
+		})
+	})
+})
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

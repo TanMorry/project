@@ -1,0 +1,124 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<div class="brand_cate"><a class="brand_hot <?php if($type == 'hot') echo color_black;?>" onclick="change_cate(this,'hot')" data-cate="hot">热门</a><a class="brand_sort <?php if($type == 'sort') echo color_black;?>" data-cate="sort" onclick="change_cate(this,'sort')">按A-Z</a></div>
+	<div class="brand_zm">
+
+		<div>
+			<div class="brand_zm_r <?php if($type == 'sort') echo brand_none;?>" id="brand_hot">
+				<div class="brand_zm_l" id="cate_info" >
+					最热
+				</div>
+				<!--{foreach($IPlist['hot'] as $k=>$v):}-->
+				<a href="javascript:;" class="brand_cate_hot <?php if($brand_id == $v['brand_id']) echo border_bottom;?>" onclick="brand_list({$v['brand_id']},this)">{$v['brand_name']}</a>
+					<!--{if($IPlist['hot'][$k+1]):}-->
+					<span class="brand_cate_fenge">|</span>
+					<!--{endif;}-->
+				<!--{endforeach;}-->
+			</div>
+			<div class="brand_zm_r <?php if($type == 'hot') echo brand_none;?>" id="brand_sort">
+				<!--{foreach($cate_sort as $k=>$v):}-->
+					<a class="brand_cate_zimu <?php if($k == $index) echo border_bottom;?>" onclick="handleSort({$k})">{$v}</a>
+				<!--{endforeach;}-->
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="brand_sort_info <?php if($type == 'hot') echo brand_none;?>">
+			<!--{foreach($IPlist['sort'] as $k=>$v):}-->
+			<div class="brand_cate_list <?php if($k != $index) echo brand_none;?>">
+					<!--{foreach($v as $ke=>$va):}-->
+						<div class="brand_sort_list">
+							<p class="brand_zm_l">{$va}</p>
+							<div class="brand_list_right">
+								<!--{foreach($IPlist['data'] as $key=>$val):}-->
+									<!--{if($key == $va):}-->
+										<!--{foreach($val as $key1=>$val1):}-->
+								<a href="javascript:;" class="brand_cate_hot <?php if($brand_id == $val1['brand_id']) echo border_bottom;?>" onclick="brand_list({$val1['brand_id']},this)">{$val1['brand_name']}</a>
+											<!--{if($val[$key1+1]):}-->
+												<span class="brand_cate_fenge">|</span>
+											<!--{endif;}-->
+										<!--{endforeach;}-->
+
+									<!--{endif;}-->
+
+								<!--{endforeach;}-->
+							</div>
+						</div>
+					<!--{endforeach;}-->
+			</div>
+			<!--{endforeach;}-->
+		</div>
+	</div>
+	<div class="brand_list">
+
+
+		<div class="tuijian_list" style="float:left; width:1200px; background:#fff;">
+			<!--{foreach($info as $k=>$v):}-->
+			<div class="prolist_r" <!--{if(($k+1)%4==0):}-->style="margin-right:0"<!--{endif;}-->>
+			<a href="{pe_url('brand?pic_id='.$v['brand_pic_id'])}"  title="{$v['brand_pic_name']}">
+				<img class="brand_pic" src="{pe_thumb($v['brand_pic_addr'],1000,1000)}" width=250px height=250px/></a>
+			</a>
+			<div class="brand_com_left">
+				<p>{pe_cut(pe_text($v['brand_pic_name']), 20, '...')}</p>
+				<p>{pe_cut(pe_text($v['brand_pic_text']), 25, '...')}</p>
+			</div>
+			<div class="brand_com">
+				<!--{if(is_array($v['comment'])):}-->
+
+				<!--{foreach($v['comment'] as $key=>$va):}-->
+				<p class="<?php if($v['comment'][$key+1]) echo com_list;?>"><img src="{pe_thumb($va['user_logo'],35,35)}" class="user_logo"><span class="user_comment">{pe_cut(pe_text($va['content']), 60, '...')}</span></p>
+				<!--{endforeach;}-->
+				<!--{endif;}-->
+			</div>
+
+			<p class="num"><span class="comnum">{$v['brand_pic_comnum']}</span><span class="zan_num_grey">{$v['brand_pic_zan']}</span></p>
+		</div>
+			<!--{endforeach;}-->
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="fenye mat15">{$db->page->html}</div>
+</div>
+<script type="text/javascript">
+	var sortIndex = "{$index}"
+	var brandType = '{$type}'
+	function change_cate(obj,str){
+		if(obj != null){
+			$(obj).addClass('color_black').siblings().removeClass('color_black');
+		}
+        brandType = str;
+		if(str == 'hot'){
+            $(".brand_sort_info").addClass('brand_none');
+            $("#brand_hot").removeClass('brand_none').siblings().addClass('brand_none');
+		}else{
+            $("#brand_sort").removeClass('brand_none').siblings().addClass('brand_none');
+            handleSort(sortIndex)
+		}
+	}
+
+	function handleSort(index){
+	    sortIndex = index
+        $("#brand_sort a").eq(sortIndex).addClass('border_bottom').siblings().removeClass('border_bottom');
+        $(".brand_sort_info").removeClass('brand_none');
+        $(".brand_sort_info>.brand_cate_list").eq(sortIndex).removeClass('brand_none').siblings().addClass('brand_none');
+	}
+
+	function brand_list(brand_id,obj){
+		//根据选择的品牌显示相应的品牌(页面刷新)
+        if(brandType == 'hot'){
+            var url = "{$pe['host_root']}index.php/brand/list?type="+brandType+"&brand_id="+brand_id;
+		}else{
+        	var url = "{$pe['host_root']}index.php/brand/list?type="+brandType+"&index="+sortIndex+"&brand_id="+brand_id;
+		}
+		$(obj).addClass('border_bottom').siblings().removeClass('border_bottom');
+		$(obj).parent().parent().siblings().find('a').removeClass('border_bottom');
+		window.location.href = url;
+	}
+
+
+
+
+</script>
+<style type="text/css">
+body{background:#f8f8f8;}
+</style>
+<!--{include(pe_tpl('footer.html'));}-->

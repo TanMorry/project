@@ -1,0 +1,60 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<a href="admin.php?mod=quan" <!--{if($act=='index'):}-->class="sel"<!--{endif;}-->>优惠券列表（{$tongji['all']}）</a>
+		<a href="admin.php?mod=quan&act=log" <!--{if($act=='log' && !$_g_state):}-->class="sel"<!--{endif;}-->>领取记录（{$tongji['get']}）</a>
+		<a href="admin.php?mod=quan&act=log&state=1" <!--{if($act=='log' && $_g_state == 1):}-->class="sel"<!--{endif;}-->>使用记录（{$tongji['use']}）</a>
+		<a href="admin.php?mod=quan&act=add" id="fabu">添加优惠券</a>
+		<div class="clear"></div>
+	</div>
+	<div class="right_main">
+		<form method="post" id="form">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list">
+		<tr>
+			<!--{if($_g_state == 1):}-->
+			<th class="bgtt" width="130">使用日期</th>
+			<th class="bgtt" width="160">使用用户</th>
+			<!--{else:}-->
+			<th class="bgtt" width="130">领取日期</th>
+			<th class="bgtt" width="160">领取用户</th>		
+			<!--{endif;}-->
+			<th class="bgtt" width="180">优惠券名称</th>
+			<th class="bgtt" width="80">面值</th>
+			<th class="bgtt" width="80">使用条件</th>
+			<th class="bgtt" width="80">限定商品</th>
+			<th class="bgtt">有效日期</th>
+			<th class="bgtt" width="70">状态</th>
+		</tr>
+		<!--{foreach($info_list as $v):}-->
+		<tr>
+			<!--{if($_g_state == 1):}-->
+			<td class="num"><!--{if(pe_date($v['quanlog_utime'], 'Y-m-d') == date('Y-m-d')):}--><span class="cred">{pe_date($v['quanlog_utime'])}</span><!--{else:}-->{pe_date($v['quanlog_utime'])}<!--{endif;}--></td>
+			<!--{else:}-->
+			<td class="num"><!--{if(pe_date($v['quanlog_atime'], 'Y-m-d') == date('Y-m-d')):}--><span class="cred">{pe_date($v['quanlog_atime'])}</span><!--{else:}-->{pe_date($v['quanlog_atime'])}<!--{endif;}--></td>
+			<!--{endif;}-->
+			<td>{$v['user_name']}</td>
+			<td><a href="{pe_url('quan-'.$v['quan_key'])}" title="{$v['quan_name']}" target="_blank" class="cblue">{$v['quan_name']}</a></td>
+			<td class="num">{$v['quan_money']}元</td>
+			<td>满{$v['quan_limit']}元</td>
+			<td>{$v['product_id']?'部分商品':'全店通用'}</td>
+			<td class="num">{$v['quan_sdate']} 至 {$v['quan_edate']}</td>
+			<td>
+				<!--{if($v['quanlog_state']==0):}-->
+				<span class="corg">未使用</span>				
+				<!--{elseif($v['quanlog_state']==1):}-->
+				<span class="cgreen">已使用</span>					
+				<!--{elseif($v['quanlog_state']==2):}-->
+				<span class="c999">已过期</span>
+				<!--{endif;}-->
+			</td>
+		</tr>
+		<!--{endforeach;}-->
+		</table>
+		</form>	
+	</div>
+	<div class="right_bottom">
+		<span class="fr fenye">{$db->page->html}</span>
+		<div class="clear"></div>
+	</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

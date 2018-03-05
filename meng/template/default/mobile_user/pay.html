@@ -1,0 +1,71 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="pagetop">
+	<div class="fh"><a href="user.php"></a></div>
+	<div>{$menutitle}</div>
+	<div class="cd"><a href="javascript:top_menu();"></a></div>
+	<!--{include(pe_tpl('top_menu.html'));}-->
+</div>
+<div class="content">
+	<form method="post" id="form">
+	<div class="user_box mat10">
+		<div class="tip_box">
+			<span class="user_left">账户余额：</span>
+			<span class="user_right"><span class="num strong corg">{$info['user_money']}</span> 元</span>
+		</div>
+		<div class="tip_box">
+			<span class="user_left">充值金额：</span>
+			<span class="user_right">
+				<input type="text" name="order_money" class="user_input1" placeholder="请填写充值金额" />
+			</span>
+		</div>
+	</div>
+	<div class="dingdan_tt2"><p>请选择支付方式</p></div>
+	<div class="fk_tb">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<!--{foreach($payway_list as $k=>$v):}-->
+		<tr class="js_radio" val="{$v['payway_mark']}">
+			<td width="110">
+				<div style="width:21px; overflow:hidden;" class="fl mar5"><img src="{$pe['host_root']}include/plugin/payway/{$k}/logo.png" width="85" /></div>
+				<span class="fl mat2">{$v['payway_name']}</span>
+			</td>
+			<td></td>
+			<td width="30"><span class="dui"></span></td>
+		</tr>
+		<!--{endforeach;}-->
+		</table>
+	</div>
+	<div class="loginbtn" style="margin:15px;">
+		<input type="hidden" name="order_payway" />
+		<input type="hidden" name="pe_token" value="{$pe_token}" />
+		<input type="hidden" name="pesubmit" />	
+		<input type="button" value="提 交" />
+	</div>
+	</form>
+</div>
+<script type="text/javascript" src="{$pe['host_root']}include/plugin/payway/wechat/wechat.js"></script>
+<script type="text/javascript">
+$(function(){
+	//支付方式
+	pe_select_radio('order_payway');
+	$(":button").click(function(){
+		var order_payway = $(":input[name='order_payway']").val();
+		var order_money = pe_num($(":input[name='order_money']").val(), 'floor', 1);
+		if (order_money < 0.1) {
+			app_tip('最低充值0.1元');
+			return false;
+		}
+		app_submit("user.php?mod=pay", function(json){
+			if (json.result) {
+				if(wx_check() && order_payway == 'wechat') {
+					app_tip('正在连接微信支付');
+					wx_jspay(json.id);
+				}
+				else {
+					app_open("{$pe['host_root']}include/plugin/payway/"+order_payway+"/order_pay.php?id="+json.id, 1000);
+				}
+			}
+		})
+	})
+})
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

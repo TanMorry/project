@@ -1,0 +1,53 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<a href="admin.php?mod=huodong" class="sel">活动列表（{$tongji['all']}）</a>
+		<a href="admin.php?mod=huodong&act=add" id="fabu">添加活动</a>
+		<div class="clear"></div>
+	</div>
+	<div class="right_main">
+		<form method="post" id="form">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list">
+		<tr>
+			<th class="bgtt" width="50">ID号</th>
+			<th class="bgtt" width="50"></th>
+			<th class="bgtt aleft">活动名称</th>
+			<th class="bgtt" width="100">创建日期</th>
+			<th class="bgtt" width="200">有效日期</th>
+			<th class="bgtt" width="100">参与商品</th>
+			<th class="bgtt" width="100">状态</th>
+			<th class="bgtt" width="110">操作</th>
+		</tr>
+		<!--{foreach($info_list as $v):}-->
+		<!--{$num=$db->pe_num('huodongdata', array('huodong_id'=>$v['huodong_id']))}-->
+		<tr>
+			<td>{$v['huodong_id']}</td>
+			<td><img src="{$pe['host_tpl']}images/cuxiao.png" style="width:33px;" /></td>
+			<td class="aleft"><span class="cblue">{$v['huodong_name']}</span><br/>{$v['huodong_tag']}</td>
+			<td class="num">{pe_date($v['huodong_atime'], 'Y-m-d')}</td>
+			<td class="num">{pe_date($v['huodong_stime'], 'Y-m-d')} 至 {pe_date($v['huodong_etime'], 'Y-m-d')}</td>
+			<td class="num">{$num}个</td>
+			<td>
+				<!--{if($v['huodong_etime'] <= time()):}-->
+				<span class="c888">已结束</span>
+				<!--{elseif($v['huodong_stime'] > time()):}-->
+				<span class="corg">未开始</span>
+				<!--{elseif($v['huodong_stime'] <= time() && $v['huodong_etime'] > time()):}-->
+				<span class="cgreen">进行中</span>		
+				<!--{endif;}-->		
+			</td>
+			<td>
+				<a href="admin.php?mod=huodong&act=edit&id={$v['huodong_id']}" class="admin_edit mar3">修改</a>
+				<a href="admin.php?mod=huodong&act=del&id={$v['huodong_id']}&token={$pe_token}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+			</td>
+		</tr>
+		<!--{endforeach;}-->
+		</table>
+		</form>
+	</div>
+	<div class="right_bottom">
+		<span class="fr fenye">{$db->page->html}</span>
+		<div class="clear"></div>
+	</div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

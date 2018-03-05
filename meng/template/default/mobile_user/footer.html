@@ -1,0 +1,17 @@
+<script type=text/javascript>
+//顶部菜单点击
+function top_menu() {
+	if ($("#top_menu").is(":hidden")) {
+		$("#top_menu").show();
+	}
+	else {
+		$("#top_menu").hide();	
+	}
+	$("#top_menu a").live("click", function(){
+		$("#top_menu").hide();
+	})
+}
+pe_loadscript("{$pe['host_root']}index.php?mod=notice");
+</script>
+</body>
+</html>

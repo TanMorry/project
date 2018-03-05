@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>提交作品</title>
+    <link type="text/css" rel="stylesheet" href="{$pe['host_tpl']}css/styled.css"/>
+    <script type="text/javascript" src="{$pe['host_root']}include/js/jquery.js"></script>
+    <script type="text/javascript" src="{$pe['host_root']}include/js/global.js"></script>
+    <script type="text/javascript" src="{$pe['host_root']}include/plugin/layer/layer.js"></script>
+</head>
+
+<body>
+<form method="post" id="form" enctype="multipart/form-data">
+    <div class="img_box">
+        <div class="img_box_left">
+            <div class="text_box"><span>选择画布</span><span id="cvid"></span></div>
+            <ul id="canvas">
+                <!--{foreach($canvas_info as $v):}-->
+                <li><img src="{pe_thumb($v['canvas_model'],150,150)}"/><input type="hidden" value="{$v['canvas_id']}"></li>
+                <!--{endforeach;}-->
+            </ul>
+        </div>
+        <div class="img_box_right">
+            <div class="text_box"><span>选择IP图片</span><span id="picid"></span>
+                <select id="iplist" onChange="get_ipimg($('#iplist').val())">
+                    <option selected value="0">-- 请选择 --</option>
+                    <!--{foreach($ip_list as $v):}-->
+                    <option value="{$v['brand_id']}">{$v['brand_name']}</option>
+                    <!--{endforeach;}-->
+                </select></div>
+            <ul id="ip">
+            </ul>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    <div style="clear:both"></div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang mat20">
+        <tr>
+            <td align="right" width="150">作品名称：</td>
+            <td><input type="text" name="name" value="" class="inputall input500"/></td>
+        </tr>
+        <tr>
+            <td align="right">作品描述：</td>
+            <td><textarea name="intro" style="width:500px;height:100px;"></textarea></td>
+        </tr>
+        <tr>
+            <td align="right">上传作品：</td>
+            <td>
+                <input type="file" name="design_img" />
+            </td>
+        </tr>
+        <tr>
+            <td align="right"></td>
+            <td>
+                <input type="hidden" name='canvas' value="">
+                <input type="hidden" name='ip' value="">
+                <input type="hidden" name="pesubmit" />
+                <input type="button" value="提 交"  class="tjbtn" />
+            </td>
+        </tr>
+    </table>
+
+</form>
+<div style="clear:both"></div>
+
+<script type="text/javascript" src="{$pe['host_root']}include/js/formcheck.js"></script>
+<script type="text/javascript" src="{$pe['host_root']}include/js/fileinput.js"></script>
+<script type="text/javascript" charset="utf-8">
+    function get_ipimg(ipid) {
+        var str = "";
+        var html = "";
+        $.ajax({
+            url: "<?php echo $pe['host_root'] ?>design.php?mod=design&act=getipimg&ipid=" + ipid,
+            context: document.body,
+            dataType: 'json',
+            success: function (data) {
+                for (var i in data) {
+                    //str =  '<option value="'+data[i].canvas_id+'">'+data[i].canvas_name+'</option>';
+                    str = '<li><img src="' + data[i].brand_pic_addr + '"/><input type="hidden" value="' + data[i].brand_pic_id + '"></li>';
+                    html += str;
+                }
+                $("#ip").html(html);
+            }
+        });
+    }
+
+    $("ul").on("click", "li", function () {
+        //console.log($(this).parent().attr("id"));
+        var ulid = $(this).parent().attr("id");
+        $(this).parent().find("li").removeClass('selected');
+        $(this).toggleClass('selected');
+        $('input[name="' + ulid + '"]').attr('value', $(this).find("input").attr('value'));
+        //console.log($(this).find("input").attr('name'));
+        //console.log($(this).find("input").attr('value'));
+    });
+
+    var form_info = [
+
+    ]
+    $(":button").pe_submit(form_info, 'form');
+
+</script>
+
+</body>
+
+</html>

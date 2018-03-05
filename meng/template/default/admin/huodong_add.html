@@ -1,0 +1,116 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<a href="javascript:;" class="sel">{$menutitle}</a>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<div class="right_main">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang mat20 mab20">
+		<tr>
+			<td align="right" width="100">活动名称：</td>
+			<td><input type="text" name="info[huodong_name]" value="{$info['huodong_name']}" class="inputall input350" /></td>
+		</tr>
+		<tr>
+			<td align="right">活动标签：</td>
+			<td>			
+				<input type="text" name="info[huodong_tag]" value="{$info['huodong_tag']}" class="inputall input150" />
+				<span class="c999 mal10">（推荐标签：
+				<!--{foreach($ini['huodong_tag'] as $v):}-->
+				<a href="javascript:;" class="huodong_tag cblue" style="text-decoration:underline">{$v}</a>
+				<!--{endforeach;}-->）</span>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">有效日期：</td>
+			<td>
+				<input type="text" name="info[huodong_stime]" value="{pe_date($info['huodong_stime'] ? $info['huodong_stime'] : time())}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" class="Wdate inputall" />
+				至 <input type="text" name="info[huodong_etime]" value="{pe_date($info['huodong_etime'] ? $info['huodong_etime'] : time())}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" class="Wdate inputall" />
+			</td>
+		</tr>
+		<tr>
+			<td align="right">选择商品：</td>
+			<td><a href="admin.php?mod=huodong&act=product_list&id={$info['huodong_id']}" onclick="return pe_dialog(this, '选择商品', 1000, 600, 'product_list')" class="admin_btn">选择商品</a></td>
+		</tr>
+		</table>
+	</div>
+	<div class="right_main2">
+		<div class="now2">
+			<p class="fl">已选择商品（<span id="product_num">{count($info_list)}</span>）</p>
+			<input type="button" value="设置减价" id="button_jian" class="fr" style="margin-right:40px" />
+			<input type="button" value="设置折扣" id="button_zhe" class="fr mar10" />
+			<div class="clear"></div>
+		</div>
+		<table border="0" cellspacing="0" cellpadding="0" class="list" id="product_list">
+		<tr>
+			<th class="bgtt" width="50">ID号</th>
+			<th class="bgtt" width="40"></th>
+			<th class="bgtt" width="">商品名称</th>
+			<th class="bgtt" width="100">商品分类</th>
+			<th class="bgtt" width="100">原价(元)</th>
+			<th class="bgtt" width="100">活动价(元)</th>
+			<th class="bgtt" width="50">操作</th>
+			<th class="bgtt"></th>
+		</tr>
+		<!--{foreach($info_list as $v):}-->
+		<tr id="{$v['product_id']}" class="product_id">
+			<td>{$v['product_id']}</td>
+			<td><img src="{pe_thumb($v['product_logo'], 100, 100)}" width="40" height="40" class="imgbg" /></td>
+			<td class="aleft" style="padding-left:0"><a class="cblue" href="{pe_url('product-'.$v['product_id'])}" target="_blank">{$v['product_name']}</a></td>
+			<td>{$cache_category[$v['category_id']]['category_name']}</td>
+			<td><span class="num corg">{$v['product_smoney']}</span></td>
+			<td><input type="text" name="huodong_money[{$v['product_id']}]" value="{$v['huodong_money']}" product_money="{$v['product_smoney']}" class="inputall input60" /></td>
+			<td><a href="javascript:;" class="admin_btn">删除</a></td>
+			<td></td>
+		</tr>
+		<!--{endforeach;}-->
+		</table>
+	</div>
+	<div class="center mat20 mab10">
+		<input type="hidden" name="pe_token" value="{$pe_token}" />
+		<input type="submit" name="pesubmit" value="提 交" class="tjbtn" />		
+	</div>
+	</form>
+</div>
+<script type="text/javascript" src="{$pe['host_root']}include/plugin/my97/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#product_list .admin_btn").live("click", function(){
+		$(this).parents("tr").remove();
+		$("#product_num").html($(".product_id").length);
+	})
+	$(".huodong_tag").click(function(){
+		$(":input[name='info[huodong_tag]']").val($(this).text());
+	})
+	$("#button_zhe").click(function(){
+		var _val = prompt('批量打折（如：打8.5折，请输入8.5）\n\n');  
+	    if (_val == '') {  
+	        alert('请输入折扣值'); 
+	    }
+	    else {  
+			$("#product_list").find("tr").each(function(){
+				if ($(this).attr("id") > 0) {
+					var money = $(this).find(":input").attr("product_money") * _val / 10;
+					$(this).find(":input").val(money.toFixed(1))
+				}
+			})
+	    }
+	})
+	$("#button_jian").click(function(){
+		var _val = prompt('批量减价（如：减价10元，请输入10）\n\n');  
+	    if (_val == '') {  
+	        alert('请输入减价值'); 
+	    }
+	    else {  
+			$("#product_list").find("tr").each(function(){
+				if ($(this).attr("id") > 0) {
+					var money = $(this).find(":input").attr("product_money") - _val;
+					if (money < 0) money = 0;
+					$(this).find(":input").val(money.toFixed(1))
+				}
+			})
+	    }
+	})
+})
+</script>
+<!--{include(pe_tpl('footer.html'));}-->
